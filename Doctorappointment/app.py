@@ -285,5 +285,5 @@ def post_prescription(appointment_id):
 
     return redirect(url_for('doctor_page'))
 
-if __name__ == '__main__':
-    app.run(host=0.0.0.0,port=500,debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
