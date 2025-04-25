@@ -1,0 +1,71 @@
+/* Appointment Requests Section */
+.appointment-requests-section {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.appointment-requests-section h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+.appointment-requests-section label {
+    font-weight: 600;
+    color: #34495e;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.appointment-requests-section input,
+.appointment-requests-section select,
+.appointment-requests-section textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.appointment-requests-section button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.appointment-requests-section button:hover {
+    background-color: #2980b9;
+}
+
+/* Pending Appointments List */
+.appointment-requests-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.appointment-requests-section li {
+    background-color: #ffffff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 6px solid #f39c12;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.appointment-requests-section li strong {
+    color: #2c3e50;
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telemedicine - Services</title>
+    <style>
+        /* Toolbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #007bff;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+        .navbar:hover {
+            background-color: #0056b3;
+        }
+        .app-name {
+            font-size: 2.4em;
+            font-weight: 900;
+            font-family: 'Brush Script MT', cursive;
+            letter-spacing: 4px;
+            color: #00e5ff;
+            text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+            cursor: pointer;
+            user-select: none;
+            animation: pulse 2.5s infinite;
+            transition: transform 0.4s ease, color 0.4s ease;
+            margin-right: 30px;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+                color: #00e5ff;
+            }
+            50% {
+                text-shadow: 0 0 30px #00e5ff;
+                color: #80ffff;
+            }
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-links a {
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-right: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: normal;
+            box-shadow: none;
+            letter-spacing: normal;
+            font-family: inherit;
+            cursor: pointer;
+            user-select: none;
+        }
+        .navbar-links a:hover {
+            background-color: #3399ff;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+        /* Body styles */
+        body {
+            background: url("{{ url_for('static', filename='image.png') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            padding: 80px 50px 50px 50px; /* top padding to avoid navbar overlap */
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .services-content {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20vh;
+            padding: 50px;
+        }
+        .services-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .services-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .service-list {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .service-item {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            color: #555;
+        }
+        .service-item h3 {
+            margin-top: 0;
+        }
+        .service-item p {
+            font-size: 1em;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .container a button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        .container a button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}" class="app-name">telemedicine</a>
+        <div class="navbar-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('contact') }}">Contact Us</a>
+        </div>
+    </div>
+    <div class="services-content">
+        <h2>Our Services</h2>
+        <p>We offer a range of services to make your healthcare journey easy and efficient. From scheduling appointments to telemedicine consultations, we are here to help.</p>
+        
+        <div class="service-list">
+            <div class="service-item">
+                <h3>Online Appointment Scheduling</h3>
+                <p>Book appointments with your preferred doctors from anywhere, at any time.</p>
+            </div>
+            <div class="service-item">
+                <h3>Telemedicine</h3>
+                <p>Consult with doctors virtually via secure video calls for a convenient healthcare experience.</p>
+            </div>
+            <div class="service-item">
+                <h3>Medical Records Management</h3>
+                <p>Keep track of your medical history and appointments securely in one place.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
+{% extends "base.html" %}
+
+
+
+{% block head %}
+<style>
+    /* Toolbar styles */
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #007bff;
+        z-index: 1000;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+    .navbar:hover {
+        background-color: #0056b3;
+    }
+    .app-name {
+        font-size: 2.4em;
+        font-weight: 900;
+        font-family: 'Brush Script MT', cursive;
+        letter-spacing: 4px;
+        color: #00e5ff;
+        text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+        cursor: pointer;
+        user-select: none;
+        animation: pulse 2.5s infinite;
+        transition: transform 0.4s ease, color 0.4s ease;
+        margin-right: 30px;
+    }
+    @keyframes pulse {
+        0%, 100% {
+            text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+            color: #00e5ff;
+        }
+        50% {
+            text-shadow: 0 0 30px #00e5ff;
+            color: #80ffff;
+        }
+    }
+    .navbar-links {
+        display: flex;
+        align-items: center;
+    }
+    .navbar-links a {
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin-right: 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: normal;
+        box-shadow: none;
+        letter-spacing: normal;
+        font-family: inherit;
+        cursor: pointer;
+        user-select: none;
+    }
+    .navbar-links a.logout {
+        background-color: #e74c3c;
+        box-shadow: 0 2px 6px rgba(231, 76, 60, 0.6);
+    }
+    .navbar-links a:hover {
+        background-color: #3399ff;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    /* Body styles */
+    body {
+        background-color: #f2f2f2;
+        padding: 80px 20px 20px 20px; /* top padding to avoid navbar overlap */
+        color: black;
+        font-family: Arial, sans-serif;
+    }
+
+    h2, h3 {
+        text-align: center;
+    }
+
+    .appointment-details {
+        margin-top: 20px;
+    }
+
+    .appointment-details table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .appointment-details th, .appointment-details td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .appointment-details th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .appointment-details tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .prescription-section {
+        max-width: 700px;
+        margin: 30px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .prescription-section pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .posted-doctors-section {
+        max-width: 700px;
+        margin: 30px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .posted-doctors-section ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .posted-doctors-section li {
+        background-color: #f8f9fa;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .appointment-requests-section {
+        max-width: 700px;
+        margin: 30px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .appointment-requests-section ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .appointment-requests-section li {
+        background-color: #f8f9fa;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="navbar">
+    <a href="{{ url_for('home') }}" class="app-name">telemedicine</a>
+    <div class="navbar-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('services') }}">Services</a>
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+    </div>
+</div>
+
+<h2>Patient Dashboard</h2>
+
+<div class="appointment-details">
+    <h3>Your Appointments</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Appointment Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.doctor_name }}</td>
+                <td>{{ appointment.doctor_specialization }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.status }}</td>
+                <td>
+                    {% if appointment.status == 'Accepted' %}
+                        {% set doctor = doctors | selectattr('_id', 'equalto', appointment.doctor_id) | first %}
+                        {% if doctor %}
+                            {% if not appointment.get('paid') %}
+                                <button class="pay-button" data-appointment-id="{{ appointment._id }}" data-amount="{{ (doctor.fee | float) * 100 | int }}" data-currency="INR" data-name="Secure Telemedicine" data-description="Consultation Fee" data-image="{{ url_for('static', filename='logo.png') }}" data-prefill-name="{{ current_user if current_user else '' }}" data-prefill-email="{{ current_user if current_user else '' }}" data-theme-color="#007BFF">Pay ₹{{ doctor.fee }}</button>
+                            {% else %}
+                                <a href="{{ doctor.zoom_link }}" target="_blank">Join Zoom</a>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+</tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+$(document).ready(function() {
+    $('.pay-button').click(function(e) {
+        e.preventDefault();
+        var button = $(this);
+        var options = {
+            "key": "rzp_test_89QWS8wjmBuCdb",
+            "amount": button.data('amount'),
+            "currency": button.data('currency'),
+            "name": button.data('name'),
+            "description": button.data('description'),
+            "image": button.data('image'),
+            "handler": function (response){
+                // On successful payment, send appointment_id and payment_id to server
+                $.post("/payment_success", {
+                    appointment_id: button.data('appointment-id'),
+                    payment_id: response.razorpay_payment_id
+                }).done(function(data) {
+                    // Reload page to show zoom link
+                    location.reload();
+                }).fail(function() {
+                    alert("Payment verification failed. Please contact support.");
+                });
+            },
+            "prefill": {
+                "name": button.data('prefill-name'),
+                "email": button.data('prefill-email')
+            },
+            "theme": {
+                "color": button.data('theme-color')
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
+});
+</script>
+
+<div class="prescription-section">
+    <h3>Prescriptions</h3>
+    {% for appointment in appointments %}
+        {% if appointment.status == 'Accepted' and appointment.prescription %}
+        <div>
+            <strong>Doctor Name:</strong> {{ appointment.doctor_name }}<br />
+            <strong>Specialization:</strong> {{ appointment.doctor_specialization }}<br />
+            <strong>Prescription:</strong>
+            <pre>{{ appointment.prescription }}</pre>
+        </div>
+        <hr />
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="posted-doctors-section">
+    <h3>Posted Doctors</h3>
+    <ul>
+        {% for doctor in doctors %}
+        <li>
+            <strong>Name:</strong> {{ doctor.doctor_name }}<br />
+            <strong>Experience:</strong> {{ doctor.experience }}<br />
+            <strong>Specialization:</strong> {{ doctor.specialization }}<br />
+            <strong>Date:</strong> {{ doctor.date }}<br />
+            <strong>Time:</strong> {{ doctor.time }}<br />
+            <strong>Fee:</strong> {{ doctor.fee }}<br />
+            <strong>Designation:</strong> {{ doctor.designation }}<br />
+            {% if doctor.scanner %}
+            <img src="{{ url_for('static', filename='uploads/' + doctor.scanner) }}" alt="Scanner Image" style="max-width: 200px; height: auto; margin-top: 10px;" />
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="appointment-requests-section">
+    <h3>Appointment Requests</h3>
+    <form action="{{ url_for('patient_page') }}" method="POST">
+        <label for="name">Name:</label><br />
+        <input type="text" id="name" name="name" required /><br /><br />
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" name="email" required /><br /><br />
+        <label for="contact">Contact:</label><br />
+        <input type="text" id="contact" name="contact" required /><br /><br />
+        <label for="address">Address:</label><br />
+        <input type="text" id="address" name="address" required /><br /><br />
+        <label for="doctor_id">Select Doctor:</label>
+        <select name="doctor_id" id="doctor_id" required>
+            {% for doctor in doctors %}
+            <option value="{{ doctor._id }}">{{ doctor.doctor_name }} - {{ doctor.specialization }}</option>
+            {% endfor %}
+        </select>
+        <br /><br />
+        <label for="problem">Describe your problem:</label><br />
+        <textarea name="problem" id="problem" rows="4" cols="50" placeholder="Enter your problem here..." required></textarea>
+        <br /><br />
+        <button type="submit">Appointment Request</button>
+    </form>
+    <ul>
+        {% for appointment in appointments %}
+            {% if appointment.status == 'Pending' %}
+            <li>
+                <strong>Doctor Name:</strong> {{ appointment.doctor_name }}<br />
+                <strong>Specialization:</strong> {{ appointment.doctor_specialization }}<br />
+                <strong>Problem:</strong> {{ appointment.problem }}<br />
+                <strong>Appointment Date:</strong> {{ appointment.date }}<br />
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+</body>
+</html>

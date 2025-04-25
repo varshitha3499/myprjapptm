@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    /* Toolbar styles */
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #007bff;
+        z-index: 1000;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+    .navbar:hover {
+        background-color: #0056b3;
+    }
+    .app-name {
+        font-size: 2.4em;
+        font-weight: 900;
+        font-family: 'Brush Script MT', cursive;
+        letter-spacing: 4px;
+        color: #00e5ff;
+        text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+        cursor: pointer;
+        user-select: none;
+        animation: pulse 2.5s infinite;
+        transition: transform 0.4s ease, color 0.4s ease;
+        margin-right: 30px;
+    }
+    @keyframes pulse {
+        0%, 100% {
+            text-shadow: 4px 4px 10px rgba(0, 229, 255, 0.8);
+            color: #00e5ff;
+        }
+        50% {
+            text-shadow: 0 0 30px #00e5ff;
+            color: #80ffff;
+        }
+    }
+    .navbar-links {
+        display: flex;
+        align-items: center;
+    }
+    .navbar-links a {
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin-right: 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: normal;
+        box-shadow: none;
+        letter-spacing: normal;
+        font-family: inherit;
+        cursor: pointer;
+        user-select: none;
+    }
+    .navbar-links a.logout {
+        background-color: #e74c3c;
+        box-shadow: 0 2px 6px rgba(231, 76, 60, 0.6);
+    }
+    .navbar-links a:hover {
+        background-color: #3399ff;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    /* Body styles */
+    body {
+        background-color: #f2f2f2;
+        padding: 80px 20px 20px 20px; /* top padding to avoid navbar overlap */
+        color: black;
+        font-family: Arial, sans-serif;
+    }
+
+    h2, h3 {
+        text-align: center;
+    }
+
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #007BFF;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    ul {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        background-color: white;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .appointment-details {
+        margin-top: 20px;
+    }
+
+    .appointment-details table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .appointment-details th, .appointment-details td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .appointment-details th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .appointment-details tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+</head>
+<body>
+<div class="navbar">
+    <a href="{{ url_for('home') }}" class="app-name">telemedicine</a>
+    <div class="navbar-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('services') }}">Services</a>
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+    </div>
+</div>
+
+<h2>Doctor Dashboard</h2>
+
+<!-- Form to post doctor details -->
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="doctor_name">Doctor Name:</label>
+    <input type="text" name="doctor_name" required>
+
+    <label for="experience">Experience:</label>
+    <input type="text" name="experience" required>
+
+    <label for="specialization">Specialization:</label>
+    <input type="text" name="specialization" required>
+
+    <label for="time">Time:</label>
+    <input type="text" name="time" required>
+
+    <label for="date">Date:</label>
+    <input type="date" name="date" required>
+
+    <label for="contact">Contact:</label>
+    <input type="text" name="contact" required>
+
+    <label for="fee">Fee:</label>
+    <input type="text" name="fee" required>
+
+    <label for="zoom_link">Zoom Meeting Link:</label>
+    <input type="text" name="zoom_link" required>
+
+    <label for="scanner">Upload Scanner (file):</label>
+    <input type="file" name="scanner" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+
+    <label for="designation">Designation:</label>
+    <input type="text" name="designation" required>
+
+    <button type="submit">Post Doctor Details</button>
+</form>
+
+<h3>Posted Doctor Details</h3>
+<ul>
+    {% for doctor in doctors %}
+    <li>
+        <strong>Name:</strong> {{ doctor['doctor_name'] }}<br>
+        <strong>Experience:</strong> {{ doctor['experience'] }}<br>
+        <strong>Specialization:</strong> {{ doctor['specialization'] }}<br>
+        <strong>Date:</strong> {{ doctor['date'] }}<br>
+        <strong>Time:</strong> {{ doctor['time'] }}<br>
+        <strong>Fee:</strong> {{ doctor['fee'] }}<br>
+        <strong>Zoom Meet:</strong> <a href="{{ doctor['zoom_link'] }}" target="_blank">{{ doctor['zoom_link'] }}</a><br>
+
+        <!-- Appointment Booking Form for each doctor -->
+        <form action="{{ url_for('patient_page') }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
+            <input type="hidden" name="doctor_id" value="{{ doctor['_id'] }}" />
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Appointments section -->
+<div class="appointment-details">
+    <h3>Appointments Made by Patients</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Problem</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Appointment Date</th>
+                <th>Doctor Name</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.patient_name }}</td>
+                <td>{{ appointment.problem }}</td>
+                <td>{{ appointment.address }}</td>
+                <td>{{ appointment.email }}</td>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.doctor_name }}</td>
+                <td>{{ appointment.patient_contact }}</td>
+                <td>{{ appointment.status }}</td>
+                <td>
+                    {% if appointment.get('paid') %}
+                        Paid
+                    {% else %}
+                        Not Paid
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{{ url_for('update_appointment_status', appointment_id=appointment._id) }}" method="POST" style="display:inline;">
+                        <select name="status" required>
+                            <option value="Accepted" {% if appointment.status == 'Accepted' %}selected{% endif %}>Accept</option>
+                            <option value="Rejected" {% if appointment.status == 'Rejected' %}selected{% endif %}>Reject</option>
+                            <option value="Hold" {% if appointment.status == 'Hold' %}selected{% endif %}>Hold</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h3>Post Prescriptions</h3>
+<ul>
+    {% for appointment in appointments %}
+        {% if appointment.status == 'Accepted' %}
+        <li>
+            <strong>Patient Name:</strong> {{ appointment.patient_name }}<br>
+            <strong>Contact:</strong> {{ appointment.patient_contact }}<br>
+            <strong>Problem:</strong> {{ appointment.problem }}<br>
+            <form action="{{ url_for('post_prescription', appointment_id=appointment._id) }}" method="POST">
+                <textarea name="prescription" placeholder="Enter prescription here..." required>{{ appointment.prescription if appointment.prescription else '' }}</textarea><br />
+                <button type="submit">Post Prescription</button>
+            </form>
+            {% if appointment.prescription %}
+            <div style="margin-top: 10px; background-color: #e9ecef; padding: 10px; border-radius: 5px;">
+                <strong>Posted Prescription:</strong><br>
+                <pre style="white-space: pre-wrap;">{{ appointment.prescription }}</pre>
+            </div>
+            {% endif %}
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.appointment-details form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const status = formData.get('status');
+            const actionUrl = form.action;
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Update the status text in the table row
+                const tr = form.closest('tr');
+                if (tr) {
+                    const statusCell = tr.querySelectorAll('td')[7];
+                    if (statusCell) {
+                        statusCell.textContent = status;
+                    }
+                    // Update the dropdown selected option to the new status
+                    const select = tr.querySelector('select[name="status"]');
+                    if (select) {
+                        select.value = status;
+                    }
+                }
+                // Show a success message or visual feedback if needed
+                console.log('Status updated successfully');
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+                alert('Failed to update status. Please try again.');
+            });
+        });
+    });
+});
+</script>
+</body>
+</html>
